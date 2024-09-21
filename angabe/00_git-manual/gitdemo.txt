@@ -1,0 +1,102 @@
+GIT-Demo in WSL: . ./bs
+
+# Statistiken in einem bestehenden Repository auswerten:
+
+git log
+git log --oneline
+git log --oneline -5
+git log --after="last month"
+git log --after="2024-07-04"
+
+git log --stat
+git log --stat master
+
+
+git log --all --grep "Kali"   # commit-mesages durchsuchen
+git log --oneline --graph     # Grafische Darstellung der Branches
+
+git log defines.inc         # Änderungshistorie der Datei anzeigen
+git blame defines.inc       # Für jede Zeile der Datei anzeigen, wann sie zuletzt 
+git show 92bbe8b3           # Zeigt alle Änderungen im Commit 92bbe8b3
+
+
+--> Übungsangabe Kapitel B Seite 3
+
+
+# .gitignore
+
+UE*.pdf
+*.bak
+*.log
+__pychache__/
+!2-Jahrgang/UE12_Editor_VI/zauberlehrling.txt
+!UE01_Cheatsheet.pdf
+
+
+# Konfiguration --> Foliensatz
+mkdir gitdemo
+git init
+git config --list
+git config --get user.name
+git config user.name "Hugo"
+git config user.email "hugo@supercool.com"
+
+git config alias.st status
+
+
+# gitdemo
+
+git log
+echo "*.log" >.gitignore
+git status
+echo "hallo" >x.txt
+echo "hurra" >y.txt
+git status
+git add .gitignore
+git add x.txt
+git commit -m "x.txt und .gitignore erstellt"
+git add y.txt
+git commit -m "y.txt erstellt"
+echo "Logeintrag" >z.log
+git status    # z.log wird nicht angezeigt, weil es aufgund .gitignore nicht berücksichtigt wird
+git add z.log # geht nicht
+git add -f z.log  # mit force geht es doch
+echo "Neue Zeile!" >>x.txt
+git status
+git add x.txt
+git status
+git commit -m "x.txt: neue Zeile hinzugefügt"
+git log
+git show     # was wurde geändert im letzten Commit?
+echo hoppla > x.txt
+git status
+git restore x.txt # lokale Änderung rückgängig machen (aus letztem Commit holen)
+cat x.txt
+git status
+git checkout HEAD~2  # vorletzten Commit wiederherstellen (alles)
+git log
+git log --all
+git checkout master  # aktuellsten Commit im Master-Branch wiederherstellen
+echo oops >y.txt
+git add y.txt
+git status
+git rm --cached y.txt     # (undo git add)
+echo wieder nix >y.txt
+git add y.txt
+git commit -m "Das ist jetzt nicht gut!"
+git status
+git log
+git reset --hard HEAD~1     # Discard all changes of the latest commit  --> Alle Änderungen danach werden vernichtet (Achtung gefährlich)
+git log
+git satus
+cat x.txt
+git checkout ec2ad9bf56762d72460a86f59e961740e459c6f4 x.txt   # holt nur die Datei x.txt aus dem gegebenen Commit
+git status
+cat x.txt
+git checkout HEAD x.txt   # letzen eingecheckten Stand der Datei wiederherstellen
+
+
+
+
+
+
