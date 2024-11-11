@@ -1,10 +1,14 @@
 package enum1;
 
 
+/**
+ * Beschreibt einen Zustand im Text (beim Wörterzählen)
+ */
 public enum State {
     WORD,
     NOWORD;
 }
+
 class Main {
     /**
      * Zählt die Wörter in einem Text

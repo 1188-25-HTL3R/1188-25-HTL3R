@@ -6,7 +6,7 @@ import static enum1.Main.*;
 
 public class StateTest {
     @Test
-    public void test() {
+    public void simple_wordcount() {
         // Tests für simple Wordcount
         assertEquals(2, count("Hello world!"));
         assertEquals(3, count("Hello    world  again!"));

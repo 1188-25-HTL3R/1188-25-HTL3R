@@ -1,7 +1,10 @@
 package wordcount;
-
+/* author: Luka Pacar 4CN */
+/**
+ * Beschreibt einen Zustand im Text (beim Wörterzählen)
+ */
 public enum State {
-    WORD {
+    WORD { // Im Wort
         @Override
         State handleChar(char c, WordCount counter) {
             if (!Character.isLetter(c)) {
@@ -10,7 +13,7 @@ public enum State {
             return WORD;
         }
     },
-    NOWORD {
+    NOWORD { // Nicht im Wort
         @Override
         State handleChar(char c, WordCount counter) {
             if (Character.isLetter(c)) {
@@ -22,10 +25,10 @@ public enum State {
     };
 
     /**
-     * handles the next character in the text
+     * Behandelt den nächsten Character im Text
      * @param c curr Character
-     * @param counter current word count
-     * @return the new state
+     * @param counter WordCount - Für Zählung
+     * @return nächster Zustand
      */
     abstract State handleChar(char c, WordCount counter);
 }

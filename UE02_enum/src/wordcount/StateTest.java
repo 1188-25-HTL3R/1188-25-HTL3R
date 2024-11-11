@@ -1,82 +1,27 @@
 package wordcount;
 import org.junit.Test;
 
+import static enum1.Main.count;
 import static org.junit.Assert.assertEquals;
 import static wordcount.WordCount.*;
 public class StateTest {
     @Test
     public void test() {
-        // leicht
+        // Tests für simple Wordcount
+        assertEquals(2, count("Hello world!"));
+        assertEquals(3, count("Hello    world  again!"));
         assertEquals(0, count(""));
-        assertEquals(0, count(" "));
-        assertEquals(0, count("  "));
-
-        // normal
-        assertEquals(1, count("one"));
-        assertEquals(1, count(" one"));
-        assertEquals(1, count("one "));
-        assertEquals(1, count(" one "));
-        assertEquals(1, count(" one  "));
-        assertEquals(1, count("  one "));
-        assertEquals(1, count("  one  "));
-
-        assertEquals(1, count("one:"));
-        assertEquals(1, count(":one"));
-        assertEquals(1, count(":one:"));
-        assertEquals(1, count(" one  "));
-        assertEquals(1, count(" one : "));
-        assertEquals(1, count(": one :"));
-        assertEquals(3, count("ein erster Text"));
-        assertEquals(3, count(" ein  erster   Text      "));
-        assertEquals(3, count("ein:erster.Text"));
-
-        // vielleicht falsch
-        assertEquals(1, count("a"));
-        assertEquals(1, count(" a"));
-        assertEquals(1, count("a "));
-        assertEquals(1, count(" a "));
-
-        // mit html
-        assertEquals(1, count(" one  <html> "));
-        assertEquals(1, count(" one  < html> "));
-        assertEquals(1, count(" one  <html > "));
-        assertEquals(1, count(" one  < html > "));
-        assertEquals(4, count(" one <html> two<html>three <html> four"));
-
-        assertEquals(2, count(" one <html> two "));
-        assertEquals(2, count(" one <html>two "));
-        assertEquals(2, count(" one<html> two "));
-        assertEquals(2, count(" one<html>two "));
-        assertEquals(2, count(" one<img alt=\"xxx\" > two"));
-        assertEquals(2, count(" one<img alt=\"xxx yyy\" > two"));
-
-        assertEquals(2, count(" one \"two\" "));
-        assertEquals(2, count(" one\"two\" "));
-        assertEquals(2, count(" one \"two\""));
-        assertEquals(3, count(" one \"two\"three"));
-        assertEquals(3, count(" one \"two\" three"));
-
-        // html - trickreich
-        // Achtung: das ist teilweise nicht ganz legales HTML
-        assertEquals(1, count(" one<html")); // kein >
-
-        assertEquals(2, count(" one<img alt=\"<bild>\" > two")); // <> innerhalb ""
-        assertEquals(2, count(" one<img alt=\"bild>\" > two"));  // <> innerhalb ""
-        assertEquals(2, count(" one<img alt=\"<bild>\" keinwort> two"));
-        assertEquals(2, count(" one<img alt=\"<bild\" keinwort>two"));
-        assertEquals(2, count(" one<img alt=\"<bild\" keinwort> two"));
-
-        assertEquals(1, count(" one<img alt=\"<bild\" keinwort"));
-        assertEquals(2, count(" one<img alt=\"<bild\" keinwort> two"));
-        assertEquals(1, count(" one<img alt=\"<bild keinwort> keinwort"));
-        assertEquals(2, count(" one<img alt=\"<bild keinwort keinwort\">two"));
-        assertEquals(2, count(" one<img alt=\"<bild keinwort< keinwort\">two"));
-
-        // ganz ganz fies -- \ entwertet das nächste Zeichen
-        assertEquals(2, count(" one<img alt=\"<bild \\\" keinwort> keinwort\" keinwort>two"));
-        assertEquals(2, count(" one<img alt=\"<bild \\\" keinwort<keinwort\" keinwort>two"));
-        assertEquals(2, count(" one<img alt=\"<bild \\\" keinwort keinwort\" keinwort>two"));
-
-        assertEquals(4, count(" \\\"null\\\" one<img alt=\"<bild \\\" keinwort keinwort\" keinwort>two \"three\""));
+        assertEquals(0, count("    "));
+        assertEquals(1, count("Hello"));
+        assertEquals(2, count("HALLO??"));
+        assertEquals(3, count("TTT???HAL??LO??"));
+        assertEquals(4, count("Hallöchen, wie geht es dir?"));
+        assertEquals(5, count("Hallo, ich das ist ein Test"));
+        assertEquals(0, count("!@#$%^&*()"));
+        assertEquals(0, count("1234 5678"));
+        assertEquals(3, count("Java 8 is cool"));
+        assertEquals(4, count("Ich bin der Luka"));
+        assertEquals(7, count("This is    a test of multiple   lines"));
+        assertEquals(0, count(""));
     }
 }

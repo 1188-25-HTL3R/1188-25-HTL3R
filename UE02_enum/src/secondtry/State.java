@@ -1,8 +1,11 @@
 package secondtry;
+/* author: Luka Pacar 4CN */
 
-
+/**
+ * Beschreibt den Zustand aktuell im Text
+ */
 public enum State {
-    WORD {
+    WORD { // Im Wort
         @Override
         public State handleChar(char c, MainWordCount counter) {
             if (c == '<') return IN_BRACKET;
@@ -10,7 +13,7 @@ public enum State {
             return NOWORD;
         }
     },
-    NOWORD {
+    NOWORD { // Nicht im Wort
         @Override
         public State handleChar(char c, MainWordCount counter) {
             if (c == '<') return IN_BRACKET;
@@ -21,7 +24,7 @@ public enum State {
             return NOWORD;
         }
     },
-    IN_BRACKET {
+    IN_BRACKET { // In einer Klammer
         @Override
         public State handleChar(char c, MainWordCount counter) {
             if (c == '\\') return IN_BRACKET_ESCAPED;
@@ -30,19 +33,19 @@ public enum State {
             return IN_BRACKET;
         }
     },
-    IN_BRACKET_ESCAPED {
+    IN_BRACKET_ESCAPED { // In einer Klammer mit Escapesequenz
         @Override
         public State handleChar(char c, MainWordCount counter) {
             return IN_BRACKET;
         }
     },
-    IN_QUOTE_ESCAPED {
+    IN_QUOTE_ESCAPED { // In Anführungszeichen mit Escapesequenz
         @Override
         public State handleChar(char c, MainWordCount counter) {
             return IN_QUOTE;
         }
     },
-    IN_QUOTE {
+    IN_QUOTE { // In Anführungszeichen
         @Override
         public State handleChar(char c, MainWordCount counter) {
             if (c == '\\') return IN_QUOTE_ESCAPED;
