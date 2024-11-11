@@ -1,7 +1,6 @@
 package wordcount;
 import org.junit.Test;
 
-import static enum1.Main.count;
 import static org.junit.Assert.assertEquals;
 import static wordcount.WordCount.*;
 public class StateTest {

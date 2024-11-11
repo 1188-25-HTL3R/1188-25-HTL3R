@@ -9,7 +9,7 @@ public enum State {
     NOWORD;
 }
 
-class Main {
+public class Main {
     /**
      * Zählt die Wörter in einem Text
      * @param s Text zu analysieren
