@@ -6,12 +6,7 @@ import static firsttry.WordCount.count;
 
 public class TestCases {
     @Test
-    public void testEmptyString() {
-        // leicht
-        assertEquals(0, count(""));
-        assertEquals(0, count(" "));
-        assertEquals(0, count("  "));
-
+    public void testNormal() {
         // normal
         assertEquals(1, count("one"));
         assertEquals(1, count(" one"));
@@ -20,6 +15,16 @@ public class TestCases {
         assertEquals(1, count(" one  "));
         assertEquals(1, count("  one "));
         assertEquals(1, count("  one  "));
+    }
+
+    @Test
+    public void testEmptyString() {
+        // leicht
+        assertEquals(0, count("one"));
+        assertEquals(0, count(" "));
+        assertEquals(0, count("  "));
+
+
 
         assertEquals(1, count("one:"));
         assertEquals(1, count(":one"));

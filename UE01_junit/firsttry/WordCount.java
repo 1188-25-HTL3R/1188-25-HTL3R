@@ -18,6 +18,16 @@ public class WordCount {
         return wordCount;
     }
 
+    /**
+     * Zählt die Depth der Klammern. Z.B. <<>> hat eine max. Depth von 2.
+     * Dabei merke ich mir die letzte schließende Klammer.
+     * Ich suche nach einer schließenden Klammer, die auf der gleichen Depth ist wie die öffnende Klammer.
+     * -> Wenn ich eine schließende Klammer finde, die auf der gleichen Depth ist, dann entferne ich den Inhalt der Klammern.
+     * -> Wenn ich das ende Erreiche, dann suche ich die letzte schließende Klammer und entferne den Inhalt bist dort (gibt es keine schließende Klammer, dann wird alles bis zum Ende entfernt)
+     * Bei einer ungeraden Anzahl von Anführungszeichen in der Klammer werden alle Wörter danach nicht gezählt.
+     * @param input
+     * @return
+     */
     private static String removeHTMLBrackets(String input) {
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
