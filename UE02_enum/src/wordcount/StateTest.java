@@ -12,10 +12,10 @@ public class StateTest {
         assertEquals(0, count(""));
         assertEquals(0, count("    "));
         assertEquals(1, count("Hello"));
-        assertEquals(2, count("HALLO??"));
+        assertEquals(1, count("HALLO??"));
         assertEquals(3, count("TTT???HAL??LO??"));
-        assertEquals(4, count("Hallöchen, wie geht es dir?"));
-        assertEquals(5, count("Hallo, ich das ist ein Test"));
+        assertEquals(5, count("Hallöchen, wie geht es dir?"));
+        assertEquals(6, count("Hallo, ich das ist ein Test"));
         assertEquals(0, count("!@#$%^&*()"));
         assertEquals(0, count("1234 5678"));
         assertEquals(3, count("Java 8 is cool"));

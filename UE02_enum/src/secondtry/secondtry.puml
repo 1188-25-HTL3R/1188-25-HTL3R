@@ -1,0 +1,22 @@
+@startuml
+' Title of the diagram
+title Wordcount - Second Try
+
+' Define states
+[*] --> NOWORD
+NOWORD --> WORD : isLetter
+NOWORD --> NOWORD : else
+WORD --> WORD : isLetter
+WORD --> NOWORD : else
+WORD --> IN_BRACKET: char = '<'
+NOWORD --> IN_BRACKET: char = '<'
+IN_BRACKET --> IN_BRACKET : else
+IN_BRACKET --> NOWORD : char = '>'
+IN_BRACKET --> IN_QUOTE : char = '"'
+IN_BRACKET --> IN_BRACKET_ESCAPED : Escapesequenz
+IN_BRACKET_ESCAPED --> IN_BRACKET : always
+IN_QUOTE_ESCAPED --> IN_QUOTE : always
+IN_QUOTE --> IN_QUOTE_ESCAPED : Escapesequenz
+IN_QUOTE --> IN_BRACKET : char = '"'
+IN_QUOTE --> IN_QUOTE : else
+@enduml
