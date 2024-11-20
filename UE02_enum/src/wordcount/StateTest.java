@@ -1,6 +1,8 @@
 package wordcount;
 import org.junit.Test;
 
+import java.nio.file.Path;
+
 import static org.junit.Assert.assertEquals;
 import static wordcount.WordCount.*;
 public class StateTest {
@@ -22,5 +24,15 @@ public class StateTest {
         assertEquals(4, count("Ich bin der Luka"));
         assertEquals(7, count("This is    a test of multiple   lines"));
         assertEquals(0, count(""));
+    }
+
+    @Test
+    public void html_file() {
+        try {
+            // Vom Code der letzten Übung 482515
+            assertEquals(482515,count(Path.of("src/crsto12.html")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

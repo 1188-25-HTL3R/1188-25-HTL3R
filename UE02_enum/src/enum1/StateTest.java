@@ -26,8 +26,14 @@ public class StateTest {
         assertEquals(7, count("This is    a test of multiple  spaces"));
         assertEquals(0, count(""));
 
+    }
+    @Test
+    public void html_file() {
         try {
-            assertEquals(31595, count(Path.of("src/enum1/wordcounttest")));
-        } catch (Exception ignored) {}
+            // Vom Code der letzten Übung 482515
+            assertEquals(482515,count(Path.of("src/crsto12.html")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

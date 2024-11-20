@@ -1,6 +1,8 @@
 package secondtry;
 import org.junit.Test;
 
+import java.nio.file.Path;
+
 import static org.junit.Assert.assertEquals;
 import static secondtry.MainWordCount.count;
 
@@ -77,5 +79,14 @@ public class WordCount {
         assertEquals(2, count(" one<img alt=\"<bild \\\" keinwort<keinwort\" keinwort>two"));
         assertEquals(2, count(" one<img alt=\"<bild \\\" keinwort keinwort\" keinwort>two"));
         assertEquals(4, count(" \\\"null\\\" one<img alt=\"<bild \\\" keinwort keinwort\" keinwort>two \"three\""));
+    }
+    @Test
+    public void html_file() {
+        try {
+            // Vom Code der letzten Übung 470528
+            assertEquals(470528,count(Path.of("src/crsto12.html")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
