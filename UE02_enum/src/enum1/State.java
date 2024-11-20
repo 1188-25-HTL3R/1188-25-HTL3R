@@ -1,6 +1,11 @@
 package enum1;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  * Beschreibt einen Zustand im Text (beim Wörterzählen)
  */
@@ -30,5 +35,22 @@ class Main {
             }
         }
         return count;
+    }
+
+    /**
+     * Zählt die Wörter in einer Datei
+     * @param file Datei zu analysieren
+     * @return Anzahl der Wörter
+     * @throws IOException Fehler beim Lesen der Datei
+     */
+    public static int count(Path file) throws IOException {
+        int totalCount = 0;
+        try (BufferedReader reader = Files.newBufferedReader(file)) {
+            String line = "";
+            while ((line=reader.readLine()) != null) {
+                totalCount += count(line);
+            }
+        }
+        return totalCount;
     }
 }

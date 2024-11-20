@@ -1,6 +1,8 @@
 package enum1;
 import org.junit.Test;
 
+import java.nio.file.Path;
+
 import static org.junit.Assert.assertEquals;
 import static enum1.Main.*;
 
@@ -23,5 +25,9 @@ public class StateTest {
         assertEquals(5, count("This is a known fact"));
         assertEquals(7, count("This is    a test of multiple  spaces"));
         assertEquals(0, count(""));
+
+        try {
+            assertEquals(31595, count(Path.of("src/enum1/wordcounttest")));
+        } catch (Exception ignored) {}
     }
 }
