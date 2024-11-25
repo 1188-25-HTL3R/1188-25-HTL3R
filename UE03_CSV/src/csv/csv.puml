@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+scale 300 width
+scale 400 height
+[*] --> READING : else & READING_STATE = READING
+READING --> READING : else & add to output
+READING --> READING : char = <DELIMITER> & add to output
+READING --> FOUND_LIMITER : char = <LIMITER>
+FOUND_LIMITER --> IN_LIMITER : else & READING_STATE = IN_LIMITER & add to output
+FOUND_LIMITER --> READING : add to output & (char = <LIMITER> && READING_STATE == READING)
+FOUND_LIMITER --> READING_AFTER_LIMITER : char = <LIMITER> && READING_STATE == READING_AFTER_LIMITER
+FOUND_LIMITER --> READING_AFTER_LIMITER : (char = <LIMITER> && READING_STATE == IN_LIMITER) & add to output
+FOUND_LIMITER --> EXCEPTION : char = <END_OF_LINE>
+IN_LIMITER --> IN_LIMITER : else & add to output
+IN_LIMITER --> READING_AFTER_LIMITER : char = <LIMITER> & READING_STATE = READING_AFTER_LIMITER
+IN_LIMITER --> EXCEPTION : char = <END_OF_LINE>
+READING_AFTER_LIMITER --> READING_AFTER_LIMITER : else & add to output
+READING_AFTER_LIMITER --> EXCEPTION : char = <DELIMITER> && output not empty
+READING_AFTER_LIMITER --> EXCEPTION : char = <END_OF_LINE> && output not empty
+READING_AFTER_LIMITER --> FOUND_LIMITER : char = <LIMITER>
+CLEARING_WHITESPACES --> CLEARING_WHITESPACES : else
+CLEARING_WHITESPACES --> FOUND_LIMITER : char = <LIMITER>
+EXCEPTION --> [*]
+READING_AFTER_LIMITER --> [*] : char = <END_OF_LINE> && output empty
+CLEARING_WHITESPACES --> [*] : char = <END_OF_LINE>
+READING --> [*] : char = <END_OF_LINE> & add to output
+
+END_OF_LINE --> [*]
+
+@enduml

@@ -4,6 +4,7 @@ import org.junit.Test;
 import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertEquals;
 import static secondtry.MainWordCount.count;
 
 public class WordCount {
