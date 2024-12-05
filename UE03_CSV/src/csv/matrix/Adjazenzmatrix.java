@@ -1,4 +1,6 @@
-package csv;
+package csv.matrix;
+
+import csv.CSVFileReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +17,7 @@ public class Adjazenzmatrix {
      * @return the Adjazenzmatrix
      */
     public static HashMap<String, List<String>> getAdjazenzmatrix(String filename) {
-        try (CSVFileReader csvFileReader = new CSVFileReader(filename)) {
+        try (csv.CSVFileReader csvFileReader = new CSVFileReader(filename)) {
             csvFileReader.changeSettings(';','"',true); // Delimiter auf ; ändern
             HashMap<String, List<String>> adjazenzmatrix = new HashMap<>();
 

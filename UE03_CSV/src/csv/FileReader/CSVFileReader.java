@@ -24,7 +24,7 @@ public class CSVFileReader implements Closeable, Iterable<String[]> {
      * @param filename the name of the file to read
      * @throws InvalidPathException if the filename is invalid
      */
-    CSVFileReader(String filename) throws IOException {
+    public CSVFileReader(String filename) throws IOException {
         reader = Files.newBufferedReader(Path.of(filename));
         csvReader = new CSVReader();
     }

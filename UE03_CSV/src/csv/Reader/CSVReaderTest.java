@@ -1,5 +1,6 @@
-package csv;
+package csv.Reader;
 
+import csv.CSVReader;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
