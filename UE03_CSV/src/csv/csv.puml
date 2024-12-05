@@ -1,31 +1,35 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 
-scale 300 width
-scale 400 height
-[*] --> READING : else & READING_STATE = READING
-READING --> READING : else & add to output
-READING --> READING : char = <DELIMITER> & add to output
-READING --> FOUND_LIMITER : char = <LIMITER>
-FOUND_LIMITER --> IN_LIMITER : else & READING_STATE = IN_LIMITER & add to output
-FOUND_LIMITER --> READING : add to output & (char = <LIMITER> && READING_STATE == READING)
-FOUND_LIMITER --> READING_AFTER_LIMITER : char = <LIMITER> && READING_STATE == READING_AFTER_LIMITER
-FOUND_LIMITER --> READING_AFTER_LIMITER : (char = <LIMITER> && READING_STATE == IN_LIMITER) & add to output
-FOUND_LIMITER --> EXCEPTION : char = <END_OF_LINE>
-IN_LIMITER --> IN_LIMITER : else & add to output
-IN_LIMITER --> READING_AFTER_LIMITER : char = <LIMITER> & READING_STATE = READING_AFTER_LIMITER
-IN_LIMITER --> EXCEPTION : char = <END_OF_LINE>
-READING_AFTER_LIMITER --> READING_AFTER_LIMITER : else & add to output
-READING_AFTER_LIMITER --> EXCEPTION : char = <DELIMITER> && output not empty
-READING_AFTER_LIMITER --> EXCEPTION : char = <END_OF_LINE> && output not empty
-READING_AFTER_LIMITER --> FOUND_LIMITER : char = <LIMITER>
-CLEARING_WHITESPACES --> CLEARING_WHITESPACES : else
-CLEARING_WHITESPACES --> FOUND_LIMITER : char = <LIMITER>
-EXCEPTION --> [*]
-READING_AFTER_LIMITER --> [*] : char = <END_OF_LINE> && output empty
-CLEARING_WHITESPACES --> [*] : char = <END_OF_LINE>
-READING --> [*] : char = <END_OF_LINE> & add to output
+scale 500 width
+scale 500 height
+[*] --> READING
+READING --> [*] : c == '\0' & add to output
+READING --> FIRST_DOUBLE_QUOTE : c == '"'
+READING --> READING : else
+READING --> DELIMITER : c == 'DELIMITER'
+READING_AFTER_DOUBLE_QUOTE --> [*] : c == '\0' -> throw Illegal Argument-Exception
+READING_AFTER_DOUBLE_QUOTE --> FIRST_DOUBLE_QUOTE : c == '"'
+READING_AFTER_DOUBLE_QUOTE --> READING_AFTER_DOUBLE_QUOTE : else
+READING_AFTER_DOUBLE_QUOTE --> [*] : c == 'DELIMITER' -> throw Illegal Argument-Exception
+DELIMITER --> FIRST_DOUBLE_QUOTE : c == '"'
+DELIMITER --> READING : else
+DELIMITER --> DELIMITER : c == 'DELIMITER'
+DELIMITER --> IN_WHITESPACE : c == ' '
+DELIMITER --> [*] : c == '\0' & add blank to output
+IN_WHITESPACE --> FIRST_DOUBLE_QUOTE : c == '"
+IN_WHITESPACE --> READING : else
+IN_WHITESPACE --> DELIMITER : c == 'DELIMITER'
+IN_WHITESPACE --> [*] : c == '\0' & add blank to output
+IN_WHITESPACE --> IN_WHITESPACE : c == ' '
+FIRST_DOUBLE_QUOTE --> READING : c == '"'
+FIRST_DOUBLE_QUOTE --> IN_DOUBLE_QUOTE : else
+FIRST_DOUBLE_QUOTE --> [*] : c == '\0' -> throw Illegal Argument-Exception
+IN_DOUBLE_QUOTE --> IN_DOUBLE_QUOTE : else
+IN_DOUBLE_QUOTE --> READING : c == '"'
+IN_DOUBLE_QUOTE --> [*] : c == '\0' -> throw Illegal Argument-Exception
+AFTER_DOUBLE_QUOTE --> READING_AFTER_DOUBLE_QUOTE : else
 
-END_OF_LINE --> [*]
+
 
 @enduml
