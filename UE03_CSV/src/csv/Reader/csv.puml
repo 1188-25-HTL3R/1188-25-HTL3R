@@ -3,7 +3,7 @@
 
 scale 500 width
 scale 500 height
-[*] --> READING
+[*] --> IN_WHITESPACE
 READING --> [*] : c == '\0' & add to output
 READING --> FIRST_DOUBLE_QUOTE : c == '"'
 READING --> READING : else
