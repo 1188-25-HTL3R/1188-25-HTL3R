@@ -1,11 +1,12 @@
 # author: Luka Pacar 4CN
 from typing import List
 
-def collatz_sequence(number:int) -> List[int]:
+def collatz_sequence(number:int, p:int = 3) -> List[int]:
     """
     Ermittelt (rekursiv!) die Collatz-Folge für eine Zahl n.
 
-    :param n: Die Zahl für die die Collatz-Folge ermittelt werden soll
+    :param number: Die Zahl für die die Collatz-Folge ermittelt werden soll
+    :param p: Der Multiplikator-Faktor für die ungeraden Zahlen. (Default = 3)
     :return: Liste mit der Collatz-Folge
 
     >>> collatz_sequence(13)
@@ -23,11 +24,12 @@ def collatz_sequence(number:int) -> List[int]:
     if number % 2 == 0:
         return [number] + collatz_sequence(number // 2)
     else:
-        return [number] + collatz_sequence(3 * number + 1)
+        return [number] + collatz_sequence(p * number + 1)
 
-def longest_collatz_sequence(number: int):
+def longest_collatz_sequence(number: int, p:int = 3):
     """
     :param number: Startzahl
+    :param p: Der Multiplikator-Faktor für die ungeraden Zahlen. (Default = 3)
     :return Startwert und Länge der längsten Collatz Zahlenfolge deren Startwert <= n ist.
 
     >>> longest_collatz_sequence(100)
@@ -43,7 +45,7 @@ def longest_collatz_sequence(number: int):
     max_length = 0
     start = 0
     for i in range(1, number):
-        length = len(collatz_sequence(i))
+        length = len(collatz_sequence(i,p))
         if length > max_length:
             max_length = length
             start = i
