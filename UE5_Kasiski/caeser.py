@@ -1,6 +1,7 @@
 __author__ = "Luka Pacar"
 from collections import Counter
 from typing import List, Tuple
+import string
 
 
 class Caesar:
@@ -149,60 +150,25 @@ class Caesar:
         >>> caesar.crack(str_test, 100) # mehr als 26 können es nicht sein.
         ['a', 'j', 'n', 'o', 'e', 'w', 'd', 'q', 'z', 'p', 'i', 'h', 'y', 's', 'k', 'x', 'c',
          'v', 'g', 'b', 'r', 'l']
-        >>> crypted = caesar.encrypt(str, "y")
+        >>> crypted = caesar.encrypt(str_test, "y")
         >>> caesar.crack(crypted, 3)
         ['y', 'h', 'l']
         """
-        def count_amount_of(crypt_text:str, letter:str, key:str = 'a') -> int:
-            """
-            Zählt die Anzahl der Buchstaben 'e' im verschlüsselten Text.
-
-            :param crypt_text: Der verschlüsselte Text
-            :param key: Der Schlüssel
-            :return: Die Anzahl der Buchstaben 'e' im verschlüsselten Text
-            :rtype: int
-            :type crypt_text: str
-            :type key: str
-
-            >>> count_amount_of("hallo", "a", "e")
-            0
-            >>> count_amount_of("aaaa", "e", "e")
-            4
-            """
-            return self.encrypt(crypt_text, key).count(letter)
-
-        def get_matches_with_letter_frequency(crypt_text:str, letter_frequency: Tuple[str, str, str, str,str, str, str, str,str, str, str, str,str, str, str, str,str, str, str, str,str, str, str, str,str, str]) -> int:
-            """
-            Gibt aus wie viele Häufigkeiten mit der angegeben häufigkeitsliste übereinstimmen.
-
-            :param crypt_text: Der verschlüsselte Text
-            :param letter_frequency: Die Häufigkeitsliste
-            :return: Die Anzahl der Übereinstimmungen
-            :rtype: List[str]
-            :type crypt_text: str
-            :type letter_frequency: Tuple[str]
-
-            >>> get_matches_with_letter_frequency("haalo", ('a', 'b', 'c', 'd', 'e'))
-            1
-            >>> get_matches_with_letter_frequency("haalolll", ('l','a', 'b', 'c', 'd', 'e', 'f'))
-            2
-            """
-            occurrences = {(letter, count_amount_of(crypt_text, letter)) for letter in "abcdefghijklmnopqrstuvwxyz"}
-            occurrences = sorted(occurrences, key=lambda x: x[1], reverse=True)
-            return sum([1 for i in range(len(letter_frequency)) if letter_frequency[i] == occurrences[i][0]])
-
-        expected_real_letter_frequency = (
-            'e', 'n', 'i', 's', 'r', 'a', 't', 'd',
-            'h', 'u', 'l', 'c', 'g', 'm', 'o', 'b',
-            'w', 'f', 'k', 'z', 'p', 'v', 'j', 'y',
-            'x', 'q'
-        )
-
-        if elements < 0:
+        if elements < 1:
             raise ValueError("elements muss größer 0 sein")
         crypt_text = self.to_lowercase_letter_only(crypt_text)
-        occurrences = {(key, get_matches_with_letter_frequency(self.encrypt(crypt_text, key), expected_real_letter_frequency)) for key in "abcdefghijklmnopqrstuvwxyz"}
-        return [key for key, _ in sorted(occurrences, key=lambda x: x[1], reverse=True)[:min(elements,26)]]
+        decrypted_e_frequency = {}
+        # Key Verschiebung und Anzahl der e's in dem Text berechnen
+        for key in string.ascii_lowercase:
+            decrypted_text = self.decrypt(crypt_text, key)
+            amount_of_e = Counter(decrypted_text)['e']
+            decrypted_e_frequency[key] = amount_of_e
+
+        # Sortieren der Keys nach der Anzahl der e's
+        # Die Keys mit den meisten e's sind die wahrscheinlichsten
+        sorted_keys = sorted(decrypted_e_frequency, key=decrypted_e_frequency.get, reverse=True)
+
+        return sorted_keys[:min(26, elements)]
 
     @staticmethod
     def check_if_key_is_valid(key:str = None) -> bool:
