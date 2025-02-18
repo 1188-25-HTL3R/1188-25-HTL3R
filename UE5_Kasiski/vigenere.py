@@ -1,10 +1,14 @@
 __author__ = "Luka Pacar"
 
-from cryptography.hazmat.decrepit.ciphers.algorithms import CAST5
-
 from caeser import Caesar
 
 class Vigenere:
+    """
+    Die Klasse Vigenere verschlüsselt und entschlüsselt Texte mit dem Vigenere-Verfahren.
+    Der Vigenere-Algorithmus ist ein symmetrisches Verschlüsselungsverfahren, bei dem jeder Buchstabe
+    des Klartextes um einen konstanten Wert verschoben wird. Der Wert wird als Schlüssel bezeichnet.
+    Im Gegensatz zum Caesar-Verfahren, besteht de Schlüssel aus einem Text
+    """
 
     def __init__(self, encryption_key:str = None):
         """
@@ -24,8 +28,6 @@ class Vigenere:
             raise ValueError("Key muss nur aus Buchstaben bestehen: " + str(encryption_key))
         self.key = encryption_key
         pass
-
-
 
     def encrypt(self, plaintext:str, key:str = None) -> str:
         """
@@ -81,9 +83,30 @@ class Vigenere:
         :type plaintext: str
         :raises ValueError: Falls kein Key gefunden werden konnte oder der Key nicht valide ist.
 
-        """
-        pass
+        >>> vigenere = Vigenere()
+        >>> vigenere.decrypt("hfnos", "abcde")
+        'hello'
 
+        >>> vigenere.decrypt("lxfopvefrnhr", "lemon")
+        'attackatdawn'
+
+        >>> vigenere.encrypt("", "abcd")
+        ''
+        >>> vigenere.encrypt("hello", "ABCDE d 1 213 12")
+        Traceback (most recent call last):
+        ...
+        ValueError: Key muss nur aus Buchstaben bestehen: abcde d 1 213 12
+        """
+        key = self.get_key(key).lower() # Key wird in Kleinbuchstaben umgewandelt
+        if not self.check_if_key_is_valid(key):
+            raise ValueError("Key muss nur aus Buchstaben bestehen: " + str(key))
+
+        encrypted_text = ""
+        for i in range(len(plaintext)):
+            curr_key_part = key[i % len(key)]
+            encrypted_text += Caesar.decrypt(Caesar(), plaintext[i], curr_key_part)
+
+        return encrypted_text
 
     @staticmethod
     def check_if_key_is_valid(key:str = None) -> bool:
