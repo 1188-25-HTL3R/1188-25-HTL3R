@@ -207,6 +207,3 @@ class Caesar:
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-
-    #c = Caesar()
-    #print(c.crack("hallo", 1))
