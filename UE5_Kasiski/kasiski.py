@@ -68,8 +68,8 @@ class Kasiski:
         mit den Abständen aller Wiederholungen der Teilstrings in text.
 
         :param text: Der verschlüsselte Text
-        :param laenge: Die Länge der Teilstrings
-        :return: Ein Set mit den Abständen aller Wiederholungen der Teilstrings in text
+        :param laenge: die Länge der Teilstrings
+        :return: ein Set mit den Abständen aller Wiederholungen der Teilstrings in text
         :rtype: Set[Tuple[str, int]]
         :type text: str
         :type laenge: int
@@ -86,6 +86,38 @@ class Kasiski:
         {('ei', 5), ('ei', 14), ('ei', 3), ('ei', 9), ('ei', 11), ('he', 9), ('ei', 2)}
         True
         """
+        dist = set()
+        for i in range(len(text) - laenge):
+            string = text[i:i+laenge]
+            for distance in self.alldist(text, string):
+                dist.add((string, distance))
+
+        return dist
+
+    def dist_n_list(self, text:str, laenge:int) -> List[int]:
+        """
+        Wie dist_tuple, liefert aber nur eine aufsteigend sortierte Liste der
+        Abstände ohne den Text zurück. In der Liste soll kein Element mehrfach vorkommen.
+
+        :param text: Der verschlüsselte Text
+        :param laenge: die Länge der Teilstrings
+        :return: eine Liste mit den Abständen aller Wiederholungen der Teilstrings in text
+        :rtype: List[int]
+        :type text: str
+        :type laenge: int
+
+        >>> k = Kasiski()
+        >>> k.dist_n_list("heissajucheieinei", 2)
+        [2, 3, 5, 9, 11, 14]
+        >>> k.dist_n_list("heissajucheieinei", 3)
+        [9]
+        >>> k.dist_n_list("heissajucheieinei", 4)
+        []
+        """
+        dist = set()
+        for _, distance in self.dist_n_tuple(text, laenge):
+                dist.add(distance)
+        return sorted(list(dist))
 
 if __name__ == "__main__":
     import doctest
