@@ -119,6 +119,22 @@ class Kasiski:
                 dist.add(distance)
         return sorted(list(dist))
 
+    def ggt(self, x:int, y:int)->int:
+        """
+        Ermittelt den größten gemeinsamen Teiler von x und y.
+
+        :param x: der erste Wert
+        :param y: der zweite Wert
+
+        >>> k = Kasiski()
+        >>> k.ggt(10, 25)
+        5
+        >>> k.ggt(10, 25)
+        5
+        """
+        while y:
+            x, y = y, x % y
+        return abs(x)
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
