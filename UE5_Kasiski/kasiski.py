@@ -1,5 +1,7 @@
 __author__ = "Luka Pacar"
 from typing import List, Set, Tuple
+from collections import Counter
+
 
 class Kasiski:
     """
@@ -132,9 +134,58 @@ class Kasiski:
         >>> k.ggt(10, 25)
         5
         """
-        while y:
-            x, y = y, x % y
-        return abs(x)
+        if min(x, y) == 0:
+            return max(x, y)
+        else:
+            return self.ggt(min(x, y), max(x,y)%min(x,y))
+
+    def ggt_count(self, zahlen:List[int])->Counter:
+        """
+        Bestimmt die Häufigkeit der paarweisen ggt aller Zahlen aus list.
+
+        :param zahlen: Eine Liste von Zahlen
+        :type zahlen: List[int]
+        :return: Ein Counter-Objekt, das die Häufigkeit der paarweisen ggt aller Zahlen aus list enthält.
+        :rtype: Counter
+
+        >>> k = Kasiski()
+        >>> k.ggt_count([12, 14, 16])
+        Counter({2: 2, 12: 1, 4: 1, 14: 1, 16: 1})
+        >>> k.ggt_count([10, 25, 50, 100])
+        Counter({10: 3, 25: 3, 50: 2, 5: 1, 100: 1})
+        """
+        occ = []
+        for i in range(len(zahlen)):
+            for j in range(i, len(zahlen)):
+                occ.append(self.ggt(zahlen[i], zahlen[j]))
+        return Counter(occ)
+
+    def get_nth_letter(self, s:str, start:int, n:int)->str:
+        """
+        Extrahiert aus s jeden n. Buchstaben beginnend mit index start.
+        Usage examples:
+        >>> k = Kasiski()
+        >>> k.get_nth_letter("Das ist kein kreativer Text.", 1, 4)
+        'asektrx'
+        """
+        output = ""
+        i = start
+        while i < len(s):
+            output += s[i]
+            i += n
+        return output
+
+    def crack_key(len:int)->str:
+        """
+        Knackt den Schlüssel der Vigenère-Chiffre mit der gegebenen Schlüssellänge.
+
+        :param len: Die Länge des Schlüssels
+        :type len: int
+        :return: Der Schlüssel
+        :rtype: str
+        """
+        pass
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
