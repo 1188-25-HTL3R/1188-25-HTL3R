@@ -181,9 +181,10 @@ class Kasiski:
 
         :param len: Die Länge des Schlüssels
         :type len: int
-        :return: Der Schlüssel
+        :return: der Schlüssel
         :rtype: str
         """
+
         pass
 
 if __name__ == "__main__":
