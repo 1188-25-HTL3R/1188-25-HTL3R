@@ -1,7 +1,8 @@
 __author__ = "Luka Pacar"
 from typing import List, Set, Tuple
 from collections import Counter
-
+from caeser import Caesar
+from vigenere import Vigenere
 
 class Kasiski:
     """
@@ -175,17 +176,41 @@ class Kasiski:
             i += n
         return output
 
-    def crack_key(len:int)->str:
+    def crack_key(self, length:int)->str:
         """
         Knackt den Schlüssel der Vigenère-Chiffre mit der gegebenen Schlüssellänge.
 
-        :param len: Die Länge des Schlüssels
-        :type len: int
+        :param length: Die Länge des Schlüssels
+        :type length: int
         :return: der Schlüssel
         :rtype: str
-        """
 
-        pass
+        >>> vi = Vigenere("test")
+        >>> encrypted = vi.encrypt("ichkannmichnichtbesinnendassichjemalsmitsovielfreudegefuelltwardiesennachmittaggenossichganzreinichbinkeinmalnichtimstandemeinefederzuhaltenderzaubermeinesherzensfliesstaufdaspapierichkannesnichtfassenichbineinwunderbarertraumwiegutesisteseinherzzuempfindendassicheinerseelenaehnlichbineineherzlicheverbindungdazwischenbestehtwielangesindiediemenschennochblindwennesumdietiefeingefoerhlesemherzgehdasallefreudennurdererseelenbegegnungentstehendieseraugenblickwarunermesslichwiekeinezeitdieserweltichwardasglueckseligstegeschöpfganzhingerissenaufloesendieseweltumschlossmichmitihremunendlichenlichtundnichtswaralsdiesergefuehlzustaendedermichmitdernaturvereinigteichwarallesundalleswarichkeinschmerzkeinsorgenurreinedaseinseinediesertagistuneinderseelenegemeisseltwienurwenigandereundichlebeindiesenstundenfortunvergaenglichbistdumirsuessesgefuehldasinmeineminnerstenwurzelnschlaegtwieewigkeiteinemeinerherzensempfindungengrundlegendieseliebeunsterblichundjedeerinnerungdarandurchdringtmichmitdieserwarmthdieichinjenemaugenblickerfuhr")
+        >>> v = Kasiski(encrypted)
+        >>> v.crack_key(4)
+        'test'
+
+        >>> story = "eswareinmaldaslebenmitallemwasesmitsichbringtundjemandemderdassichweiterhinamtagerlebteerreichtewohinauchimmerichspuuerteinschreibtunddaherdiekraftdergefuuehleseinefreienmeinungenmiterfahrenwirderwegwarundkeineanderedaseinundallesdasganzaufgingunddasseelekeineangstmehrhassteverschwendetemurgeradehinwiederfreudeverstandlichundzueinsichtfreiedasirgendwannglückgeschenktengehtvoranunddortverstehn wirallewiederundgleichzeitigkommenihmdergedankenüberseinenwegdaskonntenichtzurückbleibenundalleswaswiederholtvonseinerrichtungwiederauftrifftmanchmalvorstellenunddassalleswasgeschahnachdemersterhochentwickelteandersundnochdiegedankenführedennochweiterundvielgrösser alszuerinnernundimmerundnachdranweiterverstehenundganzergänzendeorteüberalleswachsamüberwachtengeführtenvonhochzumtiefenentgegengesetztergedankenbilderneugierigwernerweiteresbrachteverschwindendoderöffneteweiteregedankenverlassenweiterzugenüberraschunginderweltfuehrtwiederverstehenswertundbleibtalsunendlichweitererlebnisseerstzttrifftwiederzuzusammen zugewendetangekommen undnochzweifelbliebenwiedervonbleibtgenauergeräuschanfangenundabschließendundgespanntdiesemerinnerungbleibtnurwerweitergehtundfühltdasimmerwiederzumzielzurückschliefganzgeöffnetlichserinnerungszeichenbleibenklarhinweitergebrachtgestrandetfortwährendzukommenkonnterinnernundfreundlichganz zurückgeschicktweiterhelfenfuerderplanundweiterzuruendeganzverschlossenundaufwiedersehendaswiederdenwegumsichundverstehensichrückrückwärtsgeratenunendlichdergedankenkenntweitergefertigtdasgeschehen fortgegangen undunsicherheitgewechseltimfrühstückdannweitergerade unddamals derseinenanderenflogüberspurenplötzlichlächelnwiederundallewiedererwarten undnunweißtwaswiedergehtwiederganzneugierigweiterhintrifftfortfahrtendehochschreibenkenntgesichtweitweiterrichtetganzzerstreutletztwärtsmeistefühltesgesamtend derwegnimmtdiewechselsehensurstruckeweiterhinsieht unermüdlichrichtensichvorbeiüber vielehorizontbewegendgesprochenwandernachtenweiterfort gehtweiterleuchtentechnologiewiederimkomplettbeständigemwegkennenzuwartenenwertimmerdarstellungaufkommenretten"
+        >>> vi = Vigenere("crypting")
+        >>> encrypted = vi.encrypt(story)
+        >>> v = Kasiski(encrypted)
+        >>> v.crack_key(8)
+        'crypting'
+
+        """
+        distances = self.dist_n_list(self.crypt_text, length) # Abstände zwischen den Teilstrings
+        if len(distances) < 2: # Wenn es nicht genug Abstände gibt, vermutet man, dass man zu wenig Daten hat um es zu cracken.
+            raise ValueError("Unzureichende Daten um den Schlüssel zu knacken. (Längerer Text? ungenaue Key Länge?")
+        most_likely_distance = self.ggt_count(distances).most_common() # Berechnet sich den GGT der Distanzen und nimmt den häufigst vorkommenden
+        key_length = most_likely_distance[0][0]
+        most_likely_key = ""
+        for i in range(key_length):
+            # Crackt die einzelnen Teile des Schlüssels
+            most_likely_key += Caesar().crack(self.get_nth_letter(
+                self.crypt_text, i, key_length) # Extrahiert alle Teile des Textes, die mit dem gleichen Buchstaben verschlüsselt wurden.
+            )[0]
+        return most_likely_key
 
 if __name__ == "__main__":
     import doctest
