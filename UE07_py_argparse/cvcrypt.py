@@ -4,7 +4,7 @@ from UE05_Kasiski import caeser, vigenere
 
 __author__ = "Luka Pacar"
 
-parser = argparse.ArgumentParser(description="cvcrypt - Caesar & Vigenere encrypter / decrypter by ZAI / HTL Rennweg")
+parser = argparse.ArgumentParser(description="cvcrypt - Caesar & Vigenere encrypter / decrypter by PAC / HTL Rennweg")
 parser.add_argument("infile", help="Zu verschlüsselnde Datei", type=str)
 parser.add_argument("outfile", help="Zieldatei", type=str)
 
