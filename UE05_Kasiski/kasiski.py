@@ -1,8 +1,8 @@
 __author__ = "Luka Pacar"
 from typing import List, Set, Tuple
 from collections import Counter
-from caeser import Caesar
-from vigenere import Vigenere
+from UE05_Kasiski.caeser import Caesar
+from UE05_Kasiski.vigenere import Vigenere
 
 class Kasiski:
     """
