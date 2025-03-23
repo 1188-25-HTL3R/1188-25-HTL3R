@@ -60,6 +60,7 @@ class Caesar:
         ...
         ValueError: Key muss ein Buchstabe sein und Länge 1 haben: }
         """
+        plaintext = self.to_lowercase_letter_only(plaintext)
         key = self.get_key(key).lower() # Key wird in Kleinbuchstaben umgewandelt
         if not self.check_if_key_is_valid(key):
             raise ValueError("Key muss ein Buchstabe sein und Länge 1 haben: " + str(key))
@@ -92,6 +93,7 @@ class Caesar:
         ...
         ValueError: Key muss ein Buchstabe sein und Länge 1 haben: }
         """
+        plaintext = self.to_lowercase_letter_only(plaintext)
         key = self.get_key(key).lower() # Key wird in Kleinbuchstaben umgewandelt
         if not self.check_if_key_is_valid(key):
             raise ValueError("Key muss ein Buchstabe sein und Länge 1 haben: " + str(key))
