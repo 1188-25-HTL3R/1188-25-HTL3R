@@ -1,6 +1,6 @@
 __author__ = "Luka Pacar"
 
-from caeser import Caesar
+from UE05_Kasiski.caeser import Caesar
 
 class Vigenere:
     """
