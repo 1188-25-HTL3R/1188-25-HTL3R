@@ -48,7 +48,7 @@ except Exception:
 if args.cipher == "caesar" or args.cipher == "c":
     key = caeser.Caesar().crack(input_file_content)[0]
 else:
-    key = kasiski.Kasiski(input_file_content).crack_key(4)[0] # Möglicherweise Kasiski falsch implementiert? Verstehe length parameter nicht? TODO ZAI nachfragen
+    key = kasiski.Kasiski(input_file_content).crack_key(5)
 
 if args.verbose:
     print(f'Cracking {("Caesar" if args.cipher == "caesar" or args.cipher == "c" else "Vigenere")}-encrypted file {args.infile}: Key = {key}')
