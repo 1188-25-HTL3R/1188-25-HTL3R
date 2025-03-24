@@ -1,7 +1,23 @@
 import argparse
 import sys
 from UE05_Kasiski import caeser, kasiski
+"""
+cvcrack - Caesar & Vigenere Key Cracker
 
+Dieses Skript versucht, den Schlüssel einer mit dem Caesar- oder Vigenere-Algorithmus verschlüsselten Datei zu ermitteln.  
+
+Verwendung:
+    python cvcrack.py <infile> -c <cipher> [-v | -q]
+
+Argumente:
+    infile    - Die zu knackende Datei.
+    -c, --cipher  - Der zu entschlüsselnde Chiffretyp ("caesar", "c", "vigenere", "v").
+    -v, --verbose - Zeigt zusätzliche Informationen zum Cracking-Prozess an.
+    -q, --quiet   - Gibt nur den wahrscheinlichsten Schlüssel aus.
+
+Autor:
+    Luka Pacar
+"""
 parser = argparse.ArgumentParser(description="cvcrack - Caesar & Vigenere key cracker by PAC / HTL Rennweg")
 parser.add_argument("infile", help="Zu knackende Datei", type=str)
 parser.add_argument("-c","--cipher", help="zu verwendende Chiffre", choices=["caesar","c","vigenere","v"])

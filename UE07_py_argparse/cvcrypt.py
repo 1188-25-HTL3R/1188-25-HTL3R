@@ -1,6 +1,28 @@
 import sys
 import argparse
 from UE05_Kasiski import caeser, vigenere
+"""
+cvcrypt - Caesar & Vigenere Encrypter/Decrypter
+
+Dieses Skript ermöglicht die Verschlüsselung und Entschlüsselung von Dateien mithilfe des Caesar- oder Vigenere-Algorithmus.
+Der Benutzer kann den gewünschten Algorithmus auswählen und die Eingabe- sowie Ausgabedateien angeben.
+
+Verwendung:
+    python cvcrypt.py <infile> <outfile> -c <cipher> [-e | -d] -k <key> [-v | -q]
+
+Argumente:
+    infile    - Die zu verschlüsselnde oder zu entschlüsselnde Datei.
+    outfile   - Die Zieldatei für das Ergebnis.
+    -c, --cipher  - Der zu verwendende Verschlüsselungsalgorithmus ("caesar", "c", "vigenere", "v").
+    -e, --encrypt - Verschlüsselung aktivieren.
+    -d, --decrypt - Entschlüsselung aktivieren.
+    -k, --key     - Der Schlüssel für die Verschlüsselung/Entschlüsselung.
+    -v, --verbose - Detaillierte Ausgabe aktivieren.
+    -q, --quiet   - Minimale Ausgabe aktivieren.
+
+Autor:
+    Luka Pacar
+"""
 
 __author__ = "Luka Pacar"
 
