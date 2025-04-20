@@ -108,8 +108,6 @@ def correct(word:str, alle_woerter:Set[str]) -> Set[str]:
     ['aalsuppe', 'aalsuppen', 'suppe', 'ursuppe']
     >>> sorted(correct("Alsupe", woerter))
     ['aalsuppe', 'absude', 'alse', 'lupe']
-
-
     """
     word = word.lower()
     all_correct_words = set()
