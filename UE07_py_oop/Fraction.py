@@ -8,7 +8,90 @@ from math import gcd
 
 @functools.total_ordering
 class Fraction:
-    """ Diese Klasse repräsentiert einen Bruch. """
+    """
+    Diese Klasse repräsentiert einen Bruch.
+
+    >>> Fraction(1, 2) + Fraction(1, 2)
+    Fraction(1, 1)
+
+    >>> Fraction(1, 2) - Fraction(1, 4)
+    Fraction(1, 4)
+
+    >>> Fraction(2, 3) * Fraction(3, 4)
+    Fraction(1, 2)
+
+    >>> Fraction(3, 4) / Fraction(3, 2)
+    Fraction(1, 2)
+
+    >>> -Fraction(1, 2)
+    Fraction(-1, 2)
+
+    >>> abs(Fraction(-2, 3))
+    Fraction(2, 3)
+
+    >>> ~Fraction(3, 4)
+    Fraction(4, 3)
+
+    >>> float(Fraction(1, 2))
+    0.5
+
+    >>> int(Fraction(3, 2))
+    1
+
+    >>> Fraction(7, 3).__str__()
+    '2 1/3'
+
+    >>> repr(Fraction(3, 4))
+    'Fraction(3, 4)'
+
+    >>> Fraction(1, 2) == Fraction(2, 4)
+    True
+
+    >>> Fraction(1, 3) < Fraction(1, 2)
+    True
+
+    >>> Fraction(5, 3) // Fraction(1, 2)
+    3
+
+    >>> Fraction(5, 3) % Fraction(1, 2)
+    Fraction(1, 6)
+
+    >>> Fraction(2, 3) ** 2
+    Fraction(4, 9)
+
+    >>> pow(2, Fraction(1, 2))
+    1.4142135623730951
+
+    >>> a = Fraction(1, 2)
+    >>> a += Fraction(1, 2)
+    >>> a
+    Fraction(1, 1)
+
+    >>> a -= Fraction(1, 4)
+    >>> a
+    Fraction(3, 4)
+
+    >>> a *= 2
+    >>> a
+    Fraction(3, 2)
+
+    >>> a /= 3
+    >>> a
+    Fraction(1, 2)
+
+    >>> a **= 2
+    >>> a
+    Fraction(1, 4)
+
+    >>> Fraction(0.75)
+    Fraction(3, 4)
+
+    >>> Fraction(Fraction(3, 4), 1)
+    Fraction(3, 4)
+
+    >>> complex(Fraction(3, 4))
+    (0.75+0j)
+    """
     def __init__(self, numerator, denominator = None):
         """
         Initialisiert den Bruch mit Zähler und Nenner.
@@ -164,6 +247,8 @@ class Fraction:
     def __add__(self, other):
         """ Addiert zwei Brüche. """
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return Fraction(self.numerator * other_fraction.denominator + self.denominator * other_fraction.numerator, self.denominator * other_fraction.denominator)
 
     def __radd__(self, other):
@@ -173,16 +258,22 @@ class Fraction:
     def __sub__(self, other):
         """ Subtrahiert zwei Brüche. """
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return Fraction(self.numerator * other_fraction.denominator - self.denominator * other_fraction.numerator, self.denominator * other_fraction.denominator)
 
     def __rsub__(self, other):
         """ Subtrahiert zwei Brüche. """
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return Fraction(other_fraction.numerator * self.denominator - self.numerator * other_fraction.denominator, self.denominator * other_fraction.denominator)
 
     def __mul__(self, other):
         """ Multipliziert zwei Brüche. """
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return Fraction(self.numerator * other_fraction.numerator, self.denominator * other_fraction.denominator)
 
     def __rmul__(self, other):
@@ -194,6 +285,8 @@ class Fraction:
         if other == 0:
             raise ArithmeticError("Division durch 0 ist nicht erlaubt")
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return Fraction(self.numerator * other_fraction.denominator, self.denominator * other_fraction.numerator) # Kehrwert
 
     def __rtruediv__(self, other):
@@ -201,6 +294,8 @@ class Fraction:
         if self.numerator == 0:
             raise ArithmeticError("Division durch 0 ist nicht erlaubt")
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return Fraction(other_fraction.numerator * self.denominator, self.numerator * other_fraction.denominator) # Kehrwert
 
     def __floordiv__(self, other):
@@ -208,6 +303,8 @@ class Fraction:
         if other == 0:
             raise ArithmeticError("Division durch 0 ist nicht erlaubt")
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return self.numerator * other_fraction.denominator // self.denominator * other_fraction.numerator
 
     def __rfloordiv__(self, other):
@@ -215,6 +312,8 @@ class Fraction:
         if self.numerator == 0:
             raise ArithmeticError("Division durch 0 ist nicht erlaubt")
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return other_fraction.numerator * self.denominator // self.numerator * other_fraction.denominator
 
     def __mod__(self, other):
@@ -222,6 +321,8 @@ class Fraction:
         if other == 0:
             raise ArithmeticError("Modulo durch 0 ist nicht erlaubt")
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return self - (self // other_fraction) * other_fraction
 
     def __rmod__(self, other):
@@ -229,6 +330,8 @@ class Fraction:
         if self.numerator == 0:
             raise ArithmeticError("Modulo durch 0 ist nicht erlaubt")
         other_fraction = self.convert_to_fraction(other)
+        self.reduce()
+        other_fraction.reduce()
         return other_fraction - (other_fraction // self) * self
 
     def __pow__(self, exponent):
@@ -238,30 +341,6 @@ class Fraction:
     def __rpow__(self, base):
         """ Potenzieren mit Brüchen. """
         return base ** float(self)
-
-    # Reflection Operatoren
-    def __radd__(self, other):
-        return self + other
-
-    def __rsub__(self, other):
-        return Fraction(other * self.denominator - self.numerator, self.denominator)
-
-    def __rmul__(self, other):
-        return self * other
-
-    def __rtruediv__(self, other):
-        return Fraction(other * self.denominator, self.numerator)
-
-    def __rfloordiv__(self, other):
-        return Fraction(other * self.denominator // self.numerator, 1)
-
-    def __rmod__(self, other):
-        return Fraction(other * self.denominator % self.numerator, self.denominator)
-
-    def __rpow__(self, exponent):
-        return Fraction(exponent ** self.numerator, self.denominator ** exponent)
-
-    # Shift Operationen wo der Bruch der Shift ist, macht keinen Sinn
 
     # i* Operatoren
     def __iadd__(self, other):
@@ -306,18 +385,6 @@ class Fraction:
         self.denominator = result.denominator
         return self
 
-    def __ilshift__(self, shift):
-        result = self << shift
-        self.numerator = result.numerator
-        self.denominator = result.denominator
-        return self
-
-    def __irshift__(self, shift):
-        result = self >> shift
-        self.numerator = result.numerator
-        self.denominator = result.denominator
-        return self
-
 if __name__ == "__main__":
-    print(Fraction(Fraction(4,2), -4.1411241251))
-    print(Fraction(604.555,Fraction(4124.41241,24.2414)))
+    import doctest
+    doctest.testmod()
