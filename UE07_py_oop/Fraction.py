@@ -1,8 +1,6 @@
 __author__ = "Luka Pacar"
 
 import functools
-from enum import nonmember
-from functools import reduce
 from math import gcd
 
 
