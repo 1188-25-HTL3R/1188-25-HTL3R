@@ -185,12 +185,23 @@ class Fraction:
         other_fraction = self.convert_to_fraction(other)
         return Fraction(self.numerator * other_fraction.numerator, self.denominator * other_fraction.denominator)
 
+    def __rmul__(self, other):
+        """ Multipliziert zwei Brüche. """
+        return self * other
+
     def __truediv__(self, other):
         """ Dividiert zwei Brüche. """
         if other == 0:
             raise ArithmeticError("Division durch 0 ist nicht erlaubt")
         other_fraction = self.convert_to_fraction(other)
         return Fraction(self.numerator * other_fraction.denominator, self.denominator * other_fraction.numerator) # Kehrwert
+
+    def __rtruediv__(self, other):
+        """ Dividiert zwei Brüche. """
+        if self.numerator == 0:
+            raise ArithmeticError("Division durch 0 ist nicht erlaubt")
+        other_fraction = self.convert_to_fraction(other)
+        return Fraction(other_fraction.numerator * self.denominator, self.numerator * other_fraction.denominator) # Kehrwert
 
     def __floordiv__(self, other):
         """ Ganzzahldivision von zwei Brüchen. """
@@ -199,6 +210,13 @@ class Fraction:
         other_fraction = self.convert_to_fraction(other)
         return self.numerator * other_fraction.denominator // self.denominator * other_fraction.numerator
 
+    def __rfloordiv__(self, other):
+        """ Ganzzahldivision von zwei Brüchen. """
+        if self.numerator == 0:
+            raise ArithmeticError("Division durch 0 ist nicht erlaubt")
+        other_fraction = self.convert_to_fraction(other)
+        return other_fraction.numerator * self.denominator // self.numerator * other_fraction.denominator
+
     def __mod__(self, other):
         """Modulo zweier Brüche: a % b = a - (a // b) * b"""
         if other == 0:
@@ -206,30 +224,20 @@ class Fraction:
         other_fraction = self.convert_to_fraction(other)
         return self - (self // other_fraction) * other_fraction
 
+    def __rmod__(self, other):
+        """Modulo zweier Brüche: a % b = a - (a // b) * b"""
+        if self.numerator == 0:
+            raise ArithmeticError("Modulo durch 0 ist nicht erlaubt")
+        other_fraction = self.convert_to_fraction(other)
+        return other_fraction - (other_fraction // self) * self
+
     def __pow__(self, exponent):
         """ Potenzieren mit Brüchen. """
-        if isinstance(exponent, int):
-            return Fraction(self.numerator ** exponent, self.denominator ** exponent)
-        else:
-            raise TypeError("Exponent muss ganzzahlig sein")
+        return Fraction(self.numerator ** exponent, self.denominator ** exponent)
 
     def __rpow__(self, base):
         """ Potenzieren mit Brüchen. """
         return base ** float(self)
-
-    def __lshift__(self, shift):
-        # Sicherstellen, dass der Bruch einen Integer ergibt
-        if self.numerator % self.denominator == 0:
-            return Fraction(self.numerator << shift, self.denominator)
-        else:
-            raise ValueError("Der Bruch kann nicht verschoben werden, da er keinen ganzzahligen Wert ergibt.")
-
-    def __rshift__(self, shift):
-        # Sicherstellen, dass der Bruch einen Integer ergibt
-        if self.numerator % self.denominator == 0:
-            return Fraction(self.numerator >> shift, self.denominator)
-        else:
-            raise ValueError("Der Bruch kann nicht verschoben werden, da er keinen ganzzahligen Wert ergibt.")
 
     # Reflection Operatoren
     def __radd__(self, other):
