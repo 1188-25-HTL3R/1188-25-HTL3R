@@ -48,16 +48,53 @@ class Fraction:
     >>> Fraction(1, 3) < Fraction(1, 2)
     True
 
-    >>> Fraction(5, 3) // Fraction(1, 2)
-    3
+    >>> Fraction(1, 2) > Fraction(1, 3)
+    True
 
-    >>> Fraction(5, 3) % Fraction(1, 2)
-    Fraction(1, 6)
+    >>> Fraction(1, 2) <= Fraction(1, 2)
+    True
+
+    >>> Fraction(1, 2) >= Fraction(1, 2)
+    True
+
+    >>> Fraction(1, 2) != Fraction(1, 3)
+    True
+
+    >>> Fraction(1, 2) + 1
+    Fraction(3, 2)
+    >>> 1 + Fraction(1, 2)
+    Fraction(3, 2)
+
+    >>> Fraction(1, 2) - 1
+    Fraction(-1, 2)
+    >>> 1 - Fraction(1, 2)
+    Fraction(1, 2)
+
+    >>> Fraction(1, 2) * 2
+    Fraction(1, 1)
+    >>> 2 * Fraction(1, 2)
+    Fraction(1, 1)
+
+    >>> Fraction(1, 2) / 2
+    Fraction(1, 4)
+    >>> 2 / Fraction(1, 2)
+    Fraction(4, 1)
+
+    >>> Fraction(1, 2) // 2
+    0
+    >>> 2 // Fraction(1, 2)
+    4
+
+    >>> Fraction(5, 2) % 2
+    Fraction(1, 2)
+
+    >>> 2 % Fraction(5, 2)
+    Fraction(2, 1)
 
     >>> Fraction(2, 3) ** 2
     Fraction(4, 9)
 
-    >>> pow(2, Fraction(1, 2))
+    >>> 2 ** Fraction(1, 2)
     1.4142135623730951
 
     >>> a = Fraction(1, 2)
@@ -69,17 +106,24 @@ class Fraction:
     >>> a
     Fraction(3, 4)
 
-    >>> a *= 2
+    >>> a *= Fraction(4, 3)
     >>> a
-    Fraction(3, 2)
+    Fraction(1, 1)
 
-    >>> a /= 3
+    >>> a /= 2
     >>> a
     Fraction(1, 2)
 
     >>> a **= 2
     >>> a
     Fraction(1, 4)
+
+    >>> a %= 2
+    >>> a
+    Fraction(1, 4)
+    >>> a //= 2
+    >>> a
+    Fraction(0, 1)
 
     >>> Fraction(0.75)
     Fraction(3, 4)
@@ -303,16 +347,15 @@ class Fraction:
         other_fraction = self.convert_to_fraction(other)
         self.reduce()
         other_fraction.reduce()
-        return self.numerator * other_fraction.denominator // self.denominator * other_fraction.numerator
+        return (self.numerator * other_fraction.denominator) // (self.denominator * other_fraction.numerator)
 
     def __rfloordiv__(self, other):
-        """ Ganzzahldivision von zwei Brüchen. """
         if self.numerator == 0:
             raise ArithmeticError("Division durch 0 ist nicht erlaubt")
         other_fraction = self.convert_to_fraction(other)
         self.reduce()
         other_fraction.reduce()
-        return other_fraction.numerator * self.denominator // self.numerator * other_fraction.denominator
+        return (other_fraction.numerator * self.denominator) // (other_fraction.denominator * self.numerator)
 
     def __mod__(self, other):
         """Modulo zweier Brüche: a % b = a - (a // b) * b"""
@@ -386,3 +429,4 @@ class Fraction:
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
+    print(Fraction(2,1) % Fraction(5,2))
